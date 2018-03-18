@@ -1,0 +1,9 @@
+#!/bin/sh
+FILES="merge.lua crfile.lua"
+cd build/windows
+for F in $FILES; do
+ln -sf ../../$F .
+done
+CC=x86_64-w64-mingw32-gcc luastatic $FILES liblua.a -I../include
+cd -
+

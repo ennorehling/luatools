@@ -21,6 +21,8 @@ function self.read(filename, cr)
                         r.terrain = lhs
                     elseif rhs == 'Name' then
                         r.name = lhs
+                    elseif rhs == 'Beschr' then
+                        r.desc = lhs
                     end
                 end
             elseif ((ch >= '0') and (ch <= '9')) or (ch == '-') then
@@ -64,6 +66,9 @@ function self.write(filename, cr)
                 print("no terrain", r.x, r.y)
             else
                 f:write('"' .. r.terrain .. '";Terrain\n')
+            end
+            if r.desc then
+                f:write('"' .. r.desc .. '";Beschr\n')
             end
             if r.name then
                 f:write('"' .. r.name .. '";Name\n')
