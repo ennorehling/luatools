@@ -37,25 +37,28 @@ end
 
 if #arg > 0 then
     cr = nil
-    for line in io.lines(arg[1]) do
-        print(line)
-        cm = read_map(line)
-        if cr then
-            x, y = find_offset(cr, cm)
-            if x and y then
-                merge_map(cr, cm, x, y)
-            else
-                print("cannot merge", line)
-            end
+    i = 1
+    outfile = 'output.cr'
+    while i <= #arg do
+        if arg[i]=='-o' then
+            outfile = arg[i+1]
+            i = i + 2
         else
-            cr = cm
+            cm = read_map(arg[i])
+            i = i + 1
+            if cr then
+                x, y = find_offset(cr, cm)
+                if x and y then
+                    merge_map(cr, cm, x, y)
+                else
+                    print("cannot merge", line)
+                end
+            else
+                cr = cm
+            end
         end
     end
-    output = 'output.cr'
-    if #arg > 1 then
-        output = arg[2]
-    end
-    write_map(output, cr)
+    write_map(outfile, cr)
 end
 
 
