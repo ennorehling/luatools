@@ -1,7 +1,7 @@
 crfile = require('crfile')
 
-function read_map(filename)
-    return crfile.read(filename)
+function read_map(filename, plane)
+    return crfile.read(filename, plane)
 end
 
 function write_map(filename, cr)
@@ -10,7 +10,7 @@ end
 
 function find_offset(c1, c2)
     for id, r in pairs(c2) do
-        if c1[id] then
+        if type(id) == 'number' and c1[id] then
             r2 = c1[id]
             return r.x - r2.x, r.y - r2.y
         end
@@ -24,13 +24,21 @@ function merge_map(c1, c2, xo, yo)
             r.x = r.x - xo
             r.y = r.y - yo
         end
-        if c1[id] then
+        noid = crfile.mkid(r)
+        if type(id) ~= 'number' then
+            r2 = c1[noid]
+        else
             r2 = c1[id]
+        end
+        if r2 then
             for k, v in pairs(r) do
                r2[k] = v
             end
         else
-            c1[id] = r
+            c1[noid] = r
+            if type(id) == 'number' then
+                c1[id] = r
+            end
         end
     end
 end
@@ -39,12 +47,16 @@ if #arg > 0 then
     cr = nil
     i = 1
     outfile = 'output.cr'
+    plane = 0
     while i <= #arg do
-        if arg[i]=='-o' then
+        if arg[i]=='-p' then
+            plane = tonumber(arg[i+1])
+            i = i + 2
+        elseif arg[i]=='-o' then
             outfile = arg[i+1]
             i = i + 2
         else
-            cm = read_map(arg[i])
+            cm = read_map(arg[i], plane)
             i = i + 1
             if cr then
                 x, y = find_offset(cr, cm)

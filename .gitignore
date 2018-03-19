@@ -1,3 +1,5 @@
+build/windows/*.lua
+build/windows/*.c       
 # Compiled Lua sources
 luac.out
 
