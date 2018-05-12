@@ -55,10 +55,11 @@ function self.read(filename, plane)
                 z = 0
             end
             if plane == z then
+                z = math.floor(z)
                 if x and y then
                     r = {}
-                    r.x = x
-                    r.y = y
+                    r.x = math.floor(x)
+                    r.y = math.floor(y)
                     if z ~= 0 then
                         r.z = z
                     end
