@@ -4,7 +4,7 @@ cd build/windows
 for F in $FILES; do
 ln -sf ../../$F .
 done
-CC=x86_64-w64-mingw32-gcc luastatic $FILES liblua.a -I../include
+CC=x86_64-w64-mingw32-gcc luastatic $FILES liblua.a -I../include -lpthread
 x86_64-w64-mingw32-strip merge.exe
 cd -
 
